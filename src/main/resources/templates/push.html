@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="/css/common.css" type="text/css"></link>
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
+<title>top page</title>
+<meta http-equiv="Content-Type" content="text/html charset=UTF-8">
+<script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container">
+		<h1 class="sub-title" th:text="#{pushpage.title}">Hello page</h1>
+		<span th:text="${flash}" th:if="${flash}"></span>
+		<form method="post" action="/push" th:object="${formModel}">
+			<div>
+			<label for="name">Name</label> <input type="text" name="name"
+				th:value="${name}" /> 
+				
+			</div>
+			<div>
+			<label for="content">Content</label>
+			<textarea name="content" cols="20" rows="5"></textarea>
+			</div>
+			<input type="submit" class="btn btn-primary push-button" />
+		</form>
+	</div>
+</body>
+</html>

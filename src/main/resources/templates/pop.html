@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="/css/common.css" type="text/css"></link>
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
+<title>top page</title>
+<meta http-equiv="Content-Type" content="text/html charset=UTF-8">
+<script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<h1 th:text="#{poppage.title}">Hello page</h1>
+	<span th:text="${flash}" th:if="${flash}"></span>
+	<table>
+		<form method="post" action="/pop" th:object="${formModel}">
+			<tr>
+				<td><label for="name">Name</label></td>
+				<td><input type="text" name="name" th:value="${name}" /></td>
+			</tr>
+			<tr>
+				<td><label for="content">Content</label></td>
+				<!-- <td><textarea name="content" th:value="${content}" cols="20" rows="5"></textarea></td> -->
+				<td><input type="text" name="content" th:value="${content}" /></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="submit" /></td>
+			</tr>
+		</form>
+	</table>
+    <hr />
+    <table>
+    <tr><th>ID</th><th>Name</th><th>Content</th></tr>
+    <tr th:each="obj : ${datalist}">
+        <td th:text="${obj.id}"></td>
+        <td th:text="${obj.name}"></td>
+        <td th:text="${obj.content}"></td>
+    </tr>
+    </table>
+</body>
+</html>
