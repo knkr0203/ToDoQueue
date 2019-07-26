@@ -47,7 +47,7 @@ public class MainController {
 		mav.setViewName("redirect:/pop");
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "/toTop", method = RequestMethod.POST)
 	public ModelAndView toTopPage(@ModelAttribute("formModel") Task task, ModelAndView mav) {
 		session.setAttribute("name", task.getName());
@@ -92,18 +92,29 @@ public class MainController {
 
 	@RequestMapping(value = "/pop", method = RequestMethod.POST)
 	@Transactional(readOnly = false)
-	public ModelAndView pop(@ModelAttribute("formModel") Task task, RedirectAttributes redirectAttributes,
-			ModelAndView mav) {
-		List<Task> results = repository.findByNameLike(task.getName());
-		if (results.size() == 0) {
-			redirectAttributes.addFlashAttribute("error_flash", "This user has no contents.");
-			session.setAttribute("content", "");
-		} else {	
-			redirectAttributes.addFlashAttribute("flash", "Popped!");
-			session.setAttribute("content", results.get(0).getContent());
-			repository.deleteById(results.get(0).getId());
+	public ModelAndView pop(@ModelAttribute("formModel") @Validated Task task, BindingResult result,
+			RedirectAttributes redirectAttributes, ModelAndView mav) {
+		ModelAndView res = null;
+		if (!result.hasErrors()) {
+			res = new ModelAndView("redirect:/pop");
+			List<Task> results = repository.findByNameLike(task.getName());
+			session.setAttribute("name", task.getName());
+
+			if (results.size() == 0) {
+				redirectAttributes.addFlashAttribute("error_flash", "Nothing this user has pushed.");
+				session.setAttribute("content", "");
+			} else {
+				redirectAttributes.addFlashAttribute("flash", "Popped!");
+				session.setAttribute("content", results.get(0).getContent());
+				repository.deleteById(results.get(0).getId());
+			}
+
+		} else {
+			mav.setViewName("push");
+			mav.addObject("error_flash", "Invalid input.");
+			res = mav;
 		}
 		session.setAttribute("name", task.getName());
-		return new ModelAndView("redirect:/pop");
+		return res;
 	}
 }
