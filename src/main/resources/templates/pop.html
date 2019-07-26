@@ -3,39 +3,40 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" href="/css/common.css" type="text/css"></link>
-<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
 <title>top page</title>
 <meta http-equiv="Content-Type" content="text/html charset=UTF-8">
 <script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
 </head>
 <body>
-	<h1 th:text="#{poppage.title}">Hello page</h1>
-	<span th:text="${flash}" th:if="${flash}"></span>
-	<table>
-		<form method="post" action="/pop" th:object="${formModel}">
-			<tr>
-				<td><label for="name">Name</label></td>
-				<td><input type="text" name="name" th:value="${name}" /></td>
-			</tr>
-			<tr>
-				<td><label for="content">Content</label></td>
-				<!-- <td><textarea name="content" th:value="${content}" cols="20" rows="5"></textarea></td> -->
-				<td><input type="text" name="content" th:value="${content}" /></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td><input type="submit" /></td>
-			</tr>
-		</form>
-	</table>
-    <hr />
-    <table>
-    <tr><th>ID</th><th>Name</th><th>Content</th></tr>
-    <tr th:each="obj : ${datalist}">
-        <td th:text="${obj.id}"></td>
-        <td th:text="${obj.name}"></td>
-        <td th:text="${obj.content}"></td>
-    </tr>
-    </table>
+	<div class="container">
+		<h1 class="sub-title" th:text="#{poppage.title}">Hello page</h1>
+		<div class="top-wrapper">
+			<div class="top-link-wrapper">
+				<form method="post" name="totoplink" action="/toTop">
+					<input type="hidden" name="name" th:value="${name}" /> <a
+						href="javascript:document.totoplink.submit()">&lt;&lt; Top page</a>
+				</form>
+			</div>
+			<span th:text="${flash}" th:if="${flash}" class="flash"></span> <span
+				th:text="${error_flash}" th:if="${error_flash}" class="error-flash"></span>
+
+			<div>
+				<form method="post" action="/pop" th:object="${formModel}">
+					<label for="name">Name</label> <input type="text" name="name"
+						class="name-form" th:value="${name}" />
+					<div>
+						<label for="content">Content</label>
+						<p th:text="${content}" class="content"></p>
+					</div>
+					<div class="btn-wrapper">
+						<input type="submit" value="Pop"
+							class="btn btn-primary push-button" />
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

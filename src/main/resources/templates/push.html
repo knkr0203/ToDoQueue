@@ -12,19 +12,30 @@
 <body>
 	<div class="container">
 		<h1 class="sub-title" th:text="#{pushpage.title}">Hello page</h1>
-		<span th:text="${flash}" th:if="${flash}"></span>
-		<form method="post" action="/push" th:object="${formModel}">
-			<div>
-			<label for="name">Name</label> <input type="text" name="name"
-				th:value="${name}" /> 
-				
+		<div class="top-wrapper">
+			<div class="top-link-wrapper">
+				<form method="post" name="totoplink" action="/toTop">
+					<input type="hidden" name="name" th:value="${name}" /> <a
+						href="javascript:document.totoplink.submit()">&lt;&lt; Top page</a>
+				</form>
 			</div>
+			<span th:text="${flash}" th:if="${flash}" class="flash"></span> <span
+				th:text="${error_flash}" th:if="${error_flash}" class="error-flash"></span>
 			<div>
-			<label for="content">Content</label>
-			<textarea name="content" cols="20" rows="5"></textarea>
+				<form method="post" action="/push" th:object="${formModel}">
+					<label for="name">Name</label> <input type="text" name="name"
+						class="name-form" th:value="${name}" />
+					<div>
+						<label for="content">Content</label>
+						<textarea name="content" class="content" cols="20" rows="5"></textarea>
+					</div>
+					<div class="btn-wrapper">
+						<input type="submit" value="Push"
+							class="btn btn-primary push-button" />
+					</div>
+				</form>
 			</div>
-			<input type="submit" class="btn btn-primary push-button" />
-		</form>
+		</div>
 	</div>
 </body>
 </html>

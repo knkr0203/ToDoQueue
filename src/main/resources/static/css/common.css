@@ -1,24 +1,28 @@
 @charset "UTF-8";
 
 .container {
-	max-width: 1170px;
-	width: 100%;
-	padding: 15px 15px;
+	padding: 50px 15px 0 15px;
 	margin: 0 auto;
-	text-align: center;
 }
 
-.form-wrapper {
-	padding-top: 30px;
+.top-wrapper {
+	padding: 0 120px 0 120px;
+}
+
+.top-link-wrapper {
+	padding-bottom: 20px;
 }
 
 .btn-wrapper {
-	padding-top: 25px;
+	padding-top: 40px;
+	text-align: center;
 }
 
 h1 {
+	padding-bottom: 20px;
     font-weight: bold;
     color: gray;
+    text-align: center;
 }
 
 .title {    
@@ -29,6 +33,62 @@ h1 {
     font-size: 40px;
 }
 
+.name-wrapper {
+	font-size: 18px;
+}
+
 .go-push-button {
+	display: inline-block;
+	width: 45%;
     margin-right: 10px;
+}
+
+.go-pop-button {
+	display: inline-block;
+	width: 45%;
+    margin-right: 10px;
+}
+
+.name-form {
+	display: block;
+	width: 100%;
+	padding: 6px 12px;
+	font-size: 14px;
+	color: #555555;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.push-button {
+	width: 100%;
+}
+
+label {
+	padding-top: 20px;
+}
+
+textarea, input {
+	display: block;
+	width: 100%;
+}
+
+.flash {
+	font-size: 18px;
+	color: green;
+}
+
+.error-flash {
+	font-size: 18px;
+	color: red;
+}
+
+.content {
+    display: block;
+    width: 100%;
+    min-height: 122.64px;
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #555555;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }

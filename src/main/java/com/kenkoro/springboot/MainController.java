@@ -7,6 +7,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +29,8 @@ public class MainController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(ModelAndView mav) {
 		mav.setViewName("index");
+		mav.addObject("name", session.getAttribute("name"));
+		session.invalidate();
 		return mav;
 	}
 
@@ -43,6 +47,13 @@ public class MainController {
 		mav.setViewName("redirect:/pop");
 		return mav;
 	}
+	
+	@RequestMapping(value = "/toTop", method = RequestMethod.POST)
+	public ModelAndView toTopPage(@ModelAttribute("formModel") Task task, ModelAndView mav) {
+		session.setAttribute("name", task.getName());
+		mav.setViewName("redirect:/");
+		return mav;
+	}
 
 	@RequestMapping(value = "/push", method = RequestMethod.GET)
 	public ModelAndView getPushPage(ModelAndView mav) {
@@ -56,27 +67,27 @@ public class MainController {
 	public ModelAndView getPopPage(@ModelAttribute("formModel") Task task, ModelAndView mav) {
 		mav.setViewName("pop");
 		mav.addObject("name", session.getAttribute("name"));
-		task.setName((String) session.getAttribute("name"));
 		mav.addObject("content", session.getAttribute("content"));
-		task.setContent((String) session.getAttribute("content"));
-
 		session.invalidate();
-
-		// to debug
-		Iterable<Task> list = repository.findByNameLike(task.getName());
-		mav.addObject("datalist", list);
-
 		return mav;
 	}
 
 	@RequestMapping(value = "/push", method = RequestMethod.POST)
 	@Transactional(readOnly = false)
-	public ModelAndView push(@ModelAttribute("formModel") Task task, RedirectAttributes redirectAttributes,
-			ModelAndView mav) {
-		repository.saveAndFlush(task);
-		redirectAttributes.addFlashAttribute("flash", "Push successed!");
-		session.setAttribute("name", task.getName());
-		return new ModelAndView("redirect:/push");
+	public ModelAndView push(@ModelAttribute("formModel") @Validated Task task, BindingResult result,
+			RedirectAttributes redirectAttributes, ModelAndView mav) {
+		ModelAndView res = null;
+		if (!result.hasErrors()) {
+			res = new ModelAndView("redirect:/push");
+			repository.saveAndFlush(task);
+			redirectAttributes.addFlashAttribute("flash", "Push successed!");
+			session.setAttribute("name", task.getName());
+		} else {
+			mav.setViewName("push");
+			mav.addObject("error_flash", "Invalid input.");
+			res = mav;
+		}
+		return res;
 	}
 
 	@RequestMapping(value = "/pop", method = RequestMethod.POST)
@@ -85,8 +96,10 @@ public class MainController {
 			ModelAndView mav) {
 		List<Task> results = repository.findByNameLike(task.getName());
 		if (results.size() == 0) {
-			redirectAttributes.addFlashAttribute("flash", "This user has no contents.");
-		} else {
+			redirectAttributes.addFlashAttribute("error_flash", "This user has no contents.");
+			session.setAttribute("content", "");
+		} else {	
+			redirectAttributes.addFlashAttribute("flash", "Popped!");
 			session.setAttribute("content", results.get(0).getContent());
 			repository.deleteById(results.get(0).getId());
 		}

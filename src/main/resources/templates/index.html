@@ -11,19 +11,21 @@
 </head>
 <body>
 	<div class="container">
-		<h1 class="title" th:text="#{content.title}">Hello page</h1>
-		<form method="post" action="/" th:object="${formModel}">
-			<div class="form-wrapper">
-				<label for="name">Your name</label>&nbsp; <input type="text"
-					name="name" />
-				<div class="btn-wrapper">
-					<button type="submit" class="btn btn-primary go-push-button"
-						formaction="/toPush">Go push page</button>
-					<button type="submit" class="btn btn-success go-pop-button"
-						formaction="/toPop">Go pop page</button>
+		<div class="top-wrapper">
+			<h1 class="title" th:text="#{content.title}">Hello page</h1>
+			<form method="post" action="/" th:object="${formModel}">
+				<div class="form-wrapper">
+					<label for="name" class="name-label">Your name</label> <input
+						class="name-form" type="text" name="name" th:value="${name}" />
+					<div class="btn-wrapper">
+						<button type="submit" class="btn btn-primary go-push-button"
+							formaction="/toPush">Go push page</button>
+						<button type="submit" class="btn btn-success go-pop-button"
+							formaction="/toPop">Go pop page</button>
+					</div>
 				</div>
-			</div>
-		</form>
+			</form>
+		</div>
 	</div>
 </body>
 </html>
