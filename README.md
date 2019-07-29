@@ -25,7 +25,7 @@ After downloading is complete, please execute the following command where the ja
 
 　**java -jar ToDoQueue-0.0.1-SNAPSHOT.jar**
 
-You can use the app by opening a browser and accessing **localhost:8080**.
+You can use the app by opening a browser and accessing **http://http:localhost:8080**
 
 <br />
 
